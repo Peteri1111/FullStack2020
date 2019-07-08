@@ -6,15 +6,13 @@ const Header = (props) => {
             <h1>{props.name}</h1>
         </div>
     )
-}
+}sdfdsfds
 const Content = (props) => {
     return (
         <div>
             <Part text={props.info[0]} value={props.info[1]}/>
             <Part text={props.info[2]} value={props.info[3]}/>
             <Part text={props.info[4]} value={props.info[5]}/>
-                
-            
         </div>
         )
     }
@@ -22,7 +20,6 @@ const Part = (props) => {
     return (
         <p>
             {props.text} {props.value}
-
         </p>
         
     )

@@ -1,8 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import Country from "./Country"
-import Language from "./Language"
 
 const Countries =({countries, filterValue}) => {
+
+
+    const [shownCountry, setShownCountry] = useState("");
+    const handleClick = (country) => {
+        setShownCountry(country);
+        
+    }
+
+    
+
+    
     let matchedCountries = countries
     .filter((country) =>
         country.name.toLowerCase().includes(filterValue.toLowerCase())
@@ -10,28 +20,11 @@ const Countries =({countries, filterValue}) => {
 
         if (matchedCountries.length === 1) {
             let country = matchedCountries[0];
-            console.log(country);
-        
-        
             return (
-                <>
-            <h2>{country.name}</h2>
-           
-            <p>Capital {country.capital}</p>
-            <p>Population {country.population}</p>
-           
-           <h3>Languages</h3>
-
-
-           <ul>
-                {country.languages.map(({name}, i) => <Language name={name} key={i}/>)}
-           </ul>
-
-
-           <img src={country.flag} alt={"Flag of " + country.name} />
-
-
-           </>
+            <>
+                <Country {...country}/>
+            </>
+            
             )
         
             }
@@ -42,9 +35,23 @@ return (
         .filter((country) =>
             country.name.toLowerCase().includes(filterValue.toLowerCase())
             )
-            .map(({name}, i) => (
-          <Country name={name} key={i}/>
-      ))}
+            .map((country, i) => {
+                if (country === shownCountry) {
+                    return <Country key={i} {...country}/>
+                } else {
+                return (
+                    <>
+          <li key={i}>{country.name}</li> <button key={i+"button"} onClick={() => handleClick(country)}>open</button>
+          </>
+
+                )
+                
+
+            }
+        }
+    
+                
+      )}
     </ul>
 )
 } 

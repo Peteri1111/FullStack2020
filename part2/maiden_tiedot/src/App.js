@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import CountryFilter from './components/CountryFilter'
-import Country from './components/Country'
 import Countries from './components/Countries';
 
 

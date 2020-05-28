@@ -8,7 +8,7 @@ import Countries from './components/Countries';
 
 const App = () => {
 
-const [filterValue, setFilterValue] = useState("");
+const [filterValue, setFilterValue] = useState("afg");
 const [countries, setCountries] = useState([]);
 
 

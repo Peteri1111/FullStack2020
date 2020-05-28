@@ -40,9 +40,9 @@ return (
                     return <Country key={i} {...country}/>
                 } else {
                 return (
-                    <>
-          <li key={i}>{country.name}</li> <button key={i+"button"} onClick={() => handleClick(country)}>open</button>
-          </>
+                    <div key={i}>
+                        <li>{country.name}</li> <button onClick={() => handleClick(country)}>open</button>
+                    </div>
 
                 )
                 

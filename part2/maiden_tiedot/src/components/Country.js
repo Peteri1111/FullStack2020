@@ -19,7 +19,7 @@ const Country = ({capital,population,languages,flag,name}) => {
                         setWeather({temperature,wind,weatherType});
                   
                 })
-              }, [])
+              }, [capital, API_KEY])
 
 
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import ContactFilter from "./components/ContactFilter";
 import Persons from "./components/Persons";
-import axios from 'axios'
+import personService from "./services/persons";
+
 const App = (props) => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
@@ -10,12 +11,10 @@ const App = (props) => {
   const [filterValue, setFilterValue] = useState("");
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data);
-    })
-  }, [] )
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  }, []);
 
   const handleFilterValue = (e) => {
     setFilterValue(e.target.value);
@@ -29,17 +28,35 @@ const App = (props) => {
 
   const addContact = (e) => {
     e.preventDefault();
-    if (!persons.map((person) => person.name).includes(newName)) {
+    if (newName.length === 0) {
+      return;
+    }
+    let person = persons.filter((p) => p.name === newName);
+    if (person.length === 0) {
       const personObject = {
         name: newName,
         number: newNumber,
       };
+      personService
+        .create(personObject)
+        .then((newObject) => (personObject.id = newObject.id));
+
       setPersons(persons.concat(personObject));
-      setNewName("");
-      setNewNumber("");
     } else {
-      alert(`"${newName}" is already added to phonebook`);
+      if (
+        window.confirm(
+          `"${newName}" is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        person[0].number = newNumber;
+        personService.update(person[0].id, person[0]);
+
+        let newPersons = persons;
+        setPersons(newPersons);
+      }
     }
+    setNewName("");
+    setNewNumber("");
   };
 
   return (
@@ -51,13 +68,19 @@ const App = (props) => {
 
       <h3>Add a new contact here</h3>
       <PersonForm
+        newName={newName}
+        newNumber={newNumber}
         addContact={addContact}
         handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
       />
 
       <h3>Numbers</h3>
-      <Persons persons={persons} filterValue={filterValue} />
+      <Persons
+        persons={persons}
+        filterValue={filterValue}
+        setPersons={setPersons}
+      />
     </div>
   );
 };

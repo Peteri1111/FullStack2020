@@ -18,10 +18,16 @@
 </p>
 
 
-## Part03 WIP
+## Part03
 <p>
   Part 3 mainly focused on making a fullstack program using the MERN-stack (MongoDB, Express JS, React JS and Node JS).
 
   Part03 (and the newer Part02) is located in a <a href="https://github.com/Peteri1111/FullstackOpen2020Part03">different repository</a> for Heroku.
   Part 3 fullstack hosted on <a href="https://puhelinluettelo-peterii.herokuapp.com/">Heroku.</a>
+</p>
+
+## Part04
+<p>
+  So far creating tests for app's functions
+  WIP
 </p>

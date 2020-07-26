@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik5paWxvMTEiLCJpZCI6IjVmMWNhMTMxNWM3NDUyMjQ3MDc0MmVmMCIsImlhdCI6MTU5NTcxMjQ4Nn0.5geSCh3ZOauKqiZcgfQRcmDCHMdoDsRUrGhTneBlVZU
+
+{
+    "title": "The times of asdsadsaour lives",
+    "author": "Hermsadsadsaan göring",
+    "url": "someasdasdsat!!hing???",
+    "likes": 12021340
+}

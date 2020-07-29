@@ -1,44 +1,10 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
-const Blog = ({ blog, blogs, setBlogs }) => {
-
+const Blog = ({ blog, incrementLike, removeBlog }) => {
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const handleVisibility = () => {
     setVisible(!visible)
-  }
-
-
-  //i think this should be in the parent component?
-  const removeBlog = async () => {
-
-    if (!window.confirm(`Remove blog ${blog.name} by ${blog.author}?`)) return
-    console.log('you want to remove!')
-
-    await blogService.remove(blog.id)
-    setBlogs(blogs.filter(b => b.id !== blog.id))
-
-
-  }
-
-
-
-  const incrementLike = async () => {
-    try {
-      const blogObject = {
-        author: blog.author,
-        title: blog.title,
-        url: blog.url,
-        likes: likes + 1,
-        user: blog.user
-      }
-      await blogService.update(blog.id, blogObject)
-      setLikes(likes + 1)
-    } catch (e) {
-      console.log(e)
-    }
   }
 
   const blogStyle = {
@@ -53,7 +19,6 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     border: 'none',
     outline: 'none',
     padding: 0,
-    fontWeight: 'bold'
   }
   const buttonStyle = {
     color: 'white',
@@ -63,9 +28,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   }
   return (
 
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
-        <button style={titleStyle} onClick={handleVisibility}>{blog.title}</button>
+        <button style={titleStyle} onClick={handleVisibility}>{blog.title} <b>{blog.author}</b>
+        </button>
       </div>
       {visible
         ?
@@ -75,12 +41,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           </div>
 
           <div>
-            {likes}<button style={buttonStyle} onClick={incrementLike}>like</button>
+            {blog.likes}<button style={buttonStyle} onClick={incrementLike}>like</button>
           </div>
 
-          <div>
-            {blog.author}
-          </div>
+
 
           <button style={buttonStyle} onClick={removeBlog}>remove</button>
         </>

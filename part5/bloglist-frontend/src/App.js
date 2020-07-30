@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import LoginForm from './components/LoginForm'
@@ -10,12 +10,14 @@ import Togglable from './components/Togglable'
 const App = () => {
 
 
-  const blogFormRef = useRef()
 
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
   const [notificationType, setNotificationType] = useState(null) //success, fail
+
+  const blogFormRef = React.createRef()
+
 
   const notificationSetter = (text, type, timeout) => {
     setNotification(text)
@@ -25,6 +27,22 @@ const App = () => {
       setNotificationType(null)
     }, timeout)
   }
+
+
+  const addBlog = async (blogObject) => {
+
+    blogFormRef.current.toggleVisibility()
+
+    try {
+      const newBlog = await blogService
+        .create(blogObject)
+      setBlogs(blogs.concat(newBlog))
+      notificationSetter(`Blog ${newBlog.title} posted succesfully!`, 'success', 5000)
+    } catch (e) {
+      notificationSetter('Please fill all the given fields', 'error', 5000)
+    }
+  }
+
 
 
 
@@ -37,10 +55,9 @@ const App = () => {
 
       await blogService.remove(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
-      notificationSetter(`Blog ${blog.name} removed succesfully!`, 'success', 5000)
-      console.log('i was here')
+      notificationSetter(`Blog ${blog.title} removed succesfully!`, 'success', 5000)
     } catch (e) {
-      notificationSetter(`Could not remove blog ${blog.name}. Error ${e})`, 'error', 5000)
+      notificationSetter(`Could not remove blog ${blog.title}. Error ${e})`, 'error', 5000)
     }
   }
   const incrementLike = async (id) => {
@@ -72,32 +89,48 @@ const App = () => {
 
 
   return (
+
     <>
+      <h1>Blog app</h1>
       <NotificationWindow notification={notification} notificationType={notificationType} />
+
+
       {
         user === null
+
           ?
-          <LoginForm
-            setUser={setUser}
-            notificationSetter={notificationSetter}
-          />
+          <>
+            <Togglable buttonLabel='login'>
+              <LoginForm
+                setUser={setUser}
+                notificationSetter={notificationSetter}
+              />
+            </Togglable>
+          </>
           :
           <>
-            <h2>blogs</h2>
             <p>{`${user.username} logged in`} <LogoutButton setUser={setUser} /></p>
-            <Togglable buttonLabel='new note' ref={blogFormRef}>
-              <BlogForm
-                setBlogs={setBlogs}
-                blogs={blogs}
-                notificationSetter={notificationSetter}
-                blogFormRef={blogFormRef} />
+            <Togglable
+              buttonLabel='new blog'
+              ref={blogFormRef}>
+
+              <BlogForm createBlog={addBlog} />
+
             </Togglable>
-            {blogs.sort((b, a) => a.likes - b.likes).map(blog =>
-              <Blog key={blog.id} blog={blog} incrementLike={() => incrementLike(blog.id)} removeBlog={() => removeBlog(blog.id)} />
-            )}
           </>
       }
+
+
+      <h2>blogs</h2>
+      {blogs.sort((b, a) => a.likes - b.likes).map(blog =>
+        <Blog
+          key={blog.id}
+          blog={blog}
+          incrementLike={() => incrementLike(blog.id)}
+          removeBlog={() => removeBlog(blog.id)} />
+      )}
     </>
+
 
   )
 }

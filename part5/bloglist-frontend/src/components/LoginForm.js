@@ -44,6 +44,7 @@ const LoginForm = ({ notificationSetter, setUser }) => {
       <input
           type="text"
           value={username}
+          id="usernameField"
           name="Username"
           onChange={handleUsernameChange} />
       </p>
@@ -51,12 +52,13 @@ const LoginForm = ({ notificationSetter, setUser }) => {
         Password
       <input
           type="password"
+          id="passwordField"
           value={password}
           name="Password"
           onChange={handlePasswordChange}
         />
       </p>
-      <button type="submit">Login</button>
+      <button type="submit" id="loginButton">Login</button>
 
     </form>
   )

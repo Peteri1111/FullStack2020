@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
 
-const BlogForm = ({ setBlogs, blogs, notificationSetter, blogFormRef }) => {
+const BlogForm = ({ createBlog }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -19,27 +18,16 @@ const BlogForm = ({ setBlogs, blogs, notificationSetter, blogFormRef }) => {
   }
   const addBlog = async (e) => {
     e.preventDefault()
-    blogFormRef.current.toggleVisibility()
-    try {
-      const blogObject = {
-        title: title,
-        author: author,
-        url: url,
+    createBlog({
 
-      }
+      title: title,
+      author: author,
+      url: url,
 
-      const returnedBlog = await blogService
-        .create(blogObject)
-      await setBlogs(blogs.concat(returnedBlog))
-      notificationSetter(`Blog ${title} posted succesfully!`, 'success', 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    } catch (exception) {
-      console.log(exception)
-      notificationSetter('Please fill all the given fields', 'error', 5000)
-    }
-
+    })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
@@ -52,6 +40,7 @@ const BlogForm = ({ setBlogs, blogs, notificationSetter, blogFormRef }) => {
             value={title}
             type="text"
             name="Title"
+            id="title"
             onChange={handleTitleChange} />
         </p>
         <p>
@@ -60,6 +49,7 @@ const BlogForm = ({ setBlogs, blogs, notificationSetter, blogFormRef }) => {
             value={author}
             type="text"
             name="Author"
+            id="author"
             onChange={handleAuthorChange} />
         </p>
         <p>
@@ -68,9 +58,10 @@ const BlogForm = ({ setBlogs, blogs, notificationSetter, blogFormRef }) => {
             value={url}
             type="text"
             name="Url"
+            id="url"
             onChange={handleUrlChange} />
         </p>
-        <button type="submit">submit blog</button>
+        <button type="submit" id="submitBlog">submit blog</button>
       </form >
     </>
   )

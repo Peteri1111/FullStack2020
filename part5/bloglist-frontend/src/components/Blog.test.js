@@ -3,19 +3,21 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
+
+let component;
+let mockHandler = jest.fn()
+let blog;
+beforeEach(() => {
+  blog = {
+    author: 'Rikimauru',
+    title: 'How to feed 101',
+    url: 'drinkvodkaplaydotka.com',
+    likes: '100'
+  }
+  component = render(<Blog blog={blog} incrementLike={mockHandler} />)
+})
 describe('Blog renders correct things', () => {
-  let component;
-  let mockHandler = jest.fn()
-  let blog;
-  beforeEach(() => {
-    blog = {
-      author: 'Rikimauru',
-      title: 'How to feed 101',
-      url: 'drinkvodkaplaydotka.com',
-      likes: '100'
-    }
-    component = render(<Blog blog={blog} handleVisibility={mockHandler} />)
-  })
+
 
   test('only title and author by default', () => {
 
@@ -35,12 +37,27 @@ describe('Blog renders correct things', () => {
 
     fireEvent.click(button)
 
-    console.log(blog)
     expect(component.container).toHaveTextContent(
       blog.title && blog.author && blog.url && blog.likes)
   })
 })
 describe('Blog likes button functions', () => {
-  test('Like button is clicked twice')
+  test('Like button is clicked twice', () => {
+    const openBlogButton = component.getByText(blog.title)
+    fireEvent.click(openBlogButton)
+
+    const button = component.getByText('like')
+
+    expect(component.container).toHaveTextContent(100)
+
+    fireEvent.click(button)
+    fireEvent.click(button)
+    expect(mockHandler.mock.calls).toHaveLength(2)
+
+
+
+
+
+  })
 })
 

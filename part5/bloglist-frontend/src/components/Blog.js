@@ -30,24 +30,24 @@ const Blog = ({ blog, incrementLike, removeBlog }) => {
 
     <div style={blogStyle} className='blog'>
       <div>
-        <button style={titleStyle} onClick={handleVisibility}>{blog.title} <b>{blog.author}</b>
+        <button style={titleStyle} onClick={handleVisibility} className='showBlogButton'>{blog.title} <b>{blog.author}</b>
         </button>
       </div>
       {visible
         ?
-        <>
+        <div className="togglableContent">
           <div>
             {blog.url}
           </div>
 
           <div>
-            {blog.likes}<button style={buttonStyle} onClick={incrementLike}>like</button>
+            likes: {blog.likes} <button id='like' style={buttonStyle} onClick={incrementLike}>like</button>
           </div>
 
 
 
           <button style={buttonStyle} onClick={removeBlog}>remove</button>
-        </>
+        </div>
         :
         null
       }

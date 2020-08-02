@@ -1,3 +1,5 @@
+
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -24,12 +26,13 @@ const reducer = (state = initialState, action) => {
     case 'VOTE':
       const id = action.data.id
       const anecdoteToVote = state.find(a => a.id === id)
+
       const votedAnecdote = {
         ...anecdoteToVote,
         votes: anecdoteToVote.votes + 1
       }
       return state.map(anecdote =>
-        anecdote.id !== id ? anecdote : votedAnecdote)
+        anecdote.id !== id ? anecdote : votedAnecdote).sort((a, b) => a.votes < b.votes ? 1 : -1)
     case 'NEW_ANECDOTE':
       return [...state, action.data]
 

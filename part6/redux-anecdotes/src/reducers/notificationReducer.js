@@ -14,11 +14,16 @@ export const clearNotification = () => {
     type: 'CLEAR'
   }
 }
-export const setNotification = (notification) => {
-  return { type: 'SET_NOTIFICATION', notification }
+export const setNotification = (notification, timeoutSeconds) => {
+  return async dispatch => {
 
+    dispatch({ type: 'SET_NOTIFICATION', notification })
 
+    setTimeout(() => {
+      dispatch({ type: 'CLEAR' })
+    }, timeoutSeconds * 1000)
 
+  }
 }
 
 

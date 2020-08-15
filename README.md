@@ -1,5 +1,5 @@
 # <a href="https://fullstackopen.com/#course-contents">FullStack2020</a>
-##README obsolete until part08 done :)
+## README obsolete until part08 done :)
 
 
 ## Part 00

@@ -6,27 +6,21 @@ import BlogForm from './components/BlogForm'
 import LogoutButton from './components/LogoutButton'
 import NotificationWindow from './components/Notification'
 import Togglable from './components/Togglable'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
+  const dispatch = useDispatch()
 
 
-
+  let timeOutId = 0
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [notification, setNotification] = useState(null)
-  const [notificationType, setNotificationType] = useState(null) //success, fail
 
   const blogFormRef = React.createRef()
 
 
-  const notificationSetter = (text, type, timeout) => {
-    setNotification(text)
-    setNotificationType(type)
-    setTimeout(() => {
-      setNotification(null)
-      setNotificationType(null)
-    }, timeout)
-  }
+
 
 
   const addBlog = async (blogObject) => {
@@ -37,9 +31,9 @@ const App = () => {
       const newBlog = await blogService
         .create(blogObject)
       setBlogs(blogs.concat(newBlog))
-      notificationSetter(`Blog ${newBlog.title} posted succesfully!`, 'success', 5000)
+      dispatch(setNotification(`Blog ${newBlog.title} posted succesfully!`, 5, timeOutId))
     } catch (e) {
-      notificationSetter('Please fill all the given fields', 'error', 5000)
+      dispatch(setNotification('Please fill all the given fields', 5, timeOutId))
     }
   }
 
@@ -55,9 +49,9 @@ const App = () => {
 
       await blogService.remove(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
-      notificationSetter(`Blog ${blog.title} removed succesfully!`, 'success', 5000)
+      dispatch(setNotification(`Blog ${blog.title} removed succesfully!`, 5, timeOutId))
     } catch (e) {
-      notificationSetter(`Could not remove blog ${blog.title}. Error ${e})`, 'error', 5000)
+      dispatch(setNotification(`Could not remove blog ${blog.title}. Error ${e})`, 5, timeOutId))
     }
   }
   const incrementLike = async (id) => {
@@ -92,7 +86,7 @@ const App = () => {
 
     <>
       <h1>Blog app</h1>
-      <NotificationWindow notification={notification} notificationType={notificationType} />
+      <NotificationWindow />
 
 
       {
@@ -103,7 +97,7 @@ const App = () => {
             <Togglable buttonLabel='login'>
               <LoginForm
                 setUser={setUser}
-                notificationSetter={notificationSetter}
+
               />
             </Togglable>
           </>

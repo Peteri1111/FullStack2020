@@ -1,11 +1,16 @@
 import React, { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 
+const LoginForm = () => {
 
-const LoginForm = ({ notificationSetter, setUser }) => {
 
+  let timeOutId = 0
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -28,12 +33,13 @@ const LoginForm = ({ notificationSetter, setUser }) => {
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      setUser(user)
       setUsername('')
       setPassword('')
+      await dispatch(setUser(user))
+
     } catch (exception) {
       console.log(exception)
-      notificationSetter('Invalid username or password', 'error', 5000)
+      dispatch(setNotification({ type: 'error', text: 'Invalid username or password' }, 5, timeOutId))
     }
   }
 

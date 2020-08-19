@@ -1,8 +1,32 @@
 import React, { useState } from 'react'
+import { createBlog } from '../reducers/blogReducer'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+let timeOutId = 0
+
+const BlogForm = () => {
+  const dispatch = useDispatch()
 
 
-const BlogForm = ({ createBlog }) => {
+  const addBlog = async (e) => {
+    e.preventDefault()
 
+
+    try {
+      dispatch(createBlog({
+        title: title,
+        author: author,
+        url: url,
+      }))
+      dispatch(setNotification({ type: 'success', text: `Blog ${title} posted succesfully!` }, 5, timeOutId))
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+
+    } catch (e) {
+      dispatch(setNotification({ type: 'error', text: 'Please fill all the given fields' }, 5, timeOutId))
+    }
+  }
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -16,24 +40,13 @@ const BlogForm = ({ createBlog }) => {
   const handleUrlChange = (e) => {
     setUrl(e.target.value)
   }
-  const addBlog = async (e) => {
-    e.preventDefault()
-    createBlog({
 
-      title: title,
-      author: author,
-      url: url,
 
-    })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
 
   return (
     <>
       <h2>Post a new blog</h2>
-      <form onSubmit={addBlog}>
+      <form onSubmit={(e) => addBlog(e)}>
         <p>
           title
           <input

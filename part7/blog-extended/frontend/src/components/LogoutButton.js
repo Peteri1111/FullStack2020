@@ -1,17 +1,19 @@
 import React from 'react'
-
-const logout = async (setUser, e) => {
+import { useDispatch } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+const logout = async (dispatch, e) => {
   e.preventDefault()
   window.localStorage.clear()
-  setUser(null)
+  dispatch(setUser(null))
 
 }
-const LogoutButton = ({ setUser }) => {
+const LogoutButton = () => {
+  const dispatch = useDispatch()
 
 
   return (
     <>
-      <button onClick={(e) => logout(setUser, e)}>logout</button>
+      <button onClick={(e) => logout(dispatch, e)}>logout</button>
     </>
   )
 

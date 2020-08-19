@@ -4,7 +4,7 @@ const notificationReducer = (state = 'starting message', action) => {
     case 'SET_NOTIFICATION':
       return action.notification
     case 'CLEAR':
-      return ''
+      return null
     default: return state
   }
 }

@@ -33,8 +33,9 @@ const getAll = async () => {
 
 const remove = async (id) => {
   const config = {
-    headers: { AUthorization: token },
+    headers: { Authorization: token },
   }
+  console.log(config)
   const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }

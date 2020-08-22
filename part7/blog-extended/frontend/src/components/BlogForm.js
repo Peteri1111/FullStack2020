@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { createBlog } from '../reducers/blogReducer'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
-let timeOutId = 0
 
 const BlogForm = () => {
+  let timeOutId = 0
+
   const dispatch = useDispatch()
 
 
@@ -13,18 +14,18 @@ const BlogForm = () => {
 
 
     try {
-      dispatch(createBlog({
+      await dispatch(createBlog({
         title: title,
         author: author,
         url: url,
       }))
-      dispatch(setNotification({ type: 'success', text: `Blog ${title} posted succesfully!` }, 5, timeOutId))
+      timeOutId = dispatch(setNotification({ type: 'success', text: `Blog ${title} posted succesfully!` }, 5, timeOutId))
       setTitle('')
       setAuthor('')
       setUrl('')
 
     } catch (e) {
-      dispatch(setNotification({ type: 'error', text: 'Please fill all the given fields' }, 5, timeOutId))
+      timeOutId = dispatch(setNotification({ type: 'error', text: 'Please fill all the given fields' }, 5, timeOutId))
     }
   }
   const [title, setTitle] = useState('')

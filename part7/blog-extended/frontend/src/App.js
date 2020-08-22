@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
-import blogService from './services/blogs'
+
+import blogService from './services/resources'
+
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import LogoutButton from './components/LogoutButton'
@@ -9,6 +11,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
+import { Link, Switch, Route } from 'react-router-dom'
+import Users from './components/Users'
+import { initializeUsers } from './reducers/userReducer'
 
 
 
@@ -21,6 +26,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
 
@@ -33,37 +39,53 @@ const App = () => {
     }
   }, [dispatch])
 
-  const user = useSelector(state => state.user)
-
-
+  const user = useSelector(state => state.users.activeUser)
+  const padding = {
+    padding: 5
+  }
 
   return (
 
     <>
+      <div>
+        <Link style={padding} to="/users">Users</Link>
+        <Link style={padding} to="/blogs">blogs</Link>
+        <Link style={padding} to="/">home</Link>
+      </div>
+
       <h1>Blog app</h1>
       <NotificationWindow />
       {
         user === null
-
           ?
-          <>
+          <div>
             <Togglable buttonLabel='login'>
               <LoginForm />
             </Togglable>
-          </>
+          </div>
           :
-          <>
+          <div>
             <p>{`${user.username} logged in`} <LogoutButton /></p>
             <Togglable buttonLabel='new blog' ref={blogFormRef}>
 
               <BlogForm />
 
             </Togglable>
-          </>
+          </div>
       }
 
 
-      <BlogList />
+      <Switch>
+        <Route path='/blogs'>
+          <BlogList />
+        </Route>
+        <Route path='/users'>
+          <Users />
+        </Route>
+        <Route path='/'>
+          <BlogList />
+        </Route>
+      </Switch>
     </>
 
 

@@ -70,7 +70,7 @@ const BlogList = () => {
 
   const likeBlog = async (blog) => {
     dispatch(like(blog))
-    await dispatch(setNotification({ type: 'success', text: `You liked "${blog.title}"` }, 5, timeOutId))
+    timeOutId = await dispatch(setNotification({ type: 'success', text: `You liked "${blog.title}"` }, 5, timeOutId))
   }
   const removeBlog = async (blog) => {
     console.log(blog)
@@ -81,9 +81,9 @@ const BlogList = () => {
       if (!window.confirm(`Remove blog ${blog.name} by ${blog.author}?`)) return
 
       dispatch(remove(blog))
-      dispatch(setNotification({ type: 'success', text: `Blog ${blog.title} removed succesfully!` }, 5, timeOutId))
+      timeOutId = dispatch(setNotification({ type: 'success', text: `Blog ${blog.title} removed succesfully!` }, 5, timeOutId))
     } catch (e) {
-      dispatch(setNotification({ type: 'error', text: `Could not remove blog ${blog.title}. Error ${e})` }, 5, timeOutId))
+      timeOutId = dispatch(setNotification({ type: 'error', text: `Could not remove blog ${blog.title}. Error ${e})` }, 5, timeOutId))
     }
   }
 

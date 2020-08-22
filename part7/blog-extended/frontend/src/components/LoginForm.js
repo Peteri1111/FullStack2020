@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import loginService from '../services/login'
-import blogService from '../services/blogs'
+import blogService from '../services/resources'
+
 import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
@@ -36,10 +37,12 @@ const LoginForm = () => {
       setUsername('')
       setPassword('')
       await dispatch(setUser(user))
+      timeOutId = dispatch(setNotification({ type: 'success', text: `${user.username} logged in!` }, 5, timeOutId))
+
 
     } catch (exception) {
       console.log(exception)
-      dispatch(setNotification({ type: 'error', text: 'Invalid username or password' }, 5, timeOutId))
+      timeOutId = dispatch(setNotification({ type: 'error', text: 'Invalid username or password' }, 5, timeOutId))
     }
   }
 

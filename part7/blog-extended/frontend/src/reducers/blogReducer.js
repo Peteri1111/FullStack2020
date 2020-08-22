@@ -1,6 +1,6 @@
-import blogService from '../services/blogs'
+import blogService from '../services/resources'
 
-
+const blogUrl = '/api/blogs'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -33,7 +33,7 @@ const reducer = (state = [], action) => {
 
 export const initializeBlogs = () => {
   return async dispatch => {
-    const blogs = await blogService.getAll()
+    const blogs = await blogService.getAll(blogUrl)
 
     dispatch({
       type: 'INIT_BLOGS',
@@ -45,7 +45,7 @@ export const initializeBlogs = () => {
 export const like = (blogTolike) => {
   return async dispatch => {
     const blog = { ...blogTolike, likes: blogTolike.likes + 1 }
-    const likedBlog = await blogService.update(blogTolike.id, blog)
+    const likedBlog = await blogService.update(blogTolike.id, blog, blogUrl)
     dispatch({
       type: 'LIKE',
       data: { id: likedBlog.id }
@@ -55,7 +55,7 @@ export const like = (blogTolike) => {
 
 export const remove = (blogToRemove) => {
   return async dispatch => {
-    await blogService.remove(blogToRemove.id)
+    await blogService.remove(blogToRemove.id, blogUrl)
     dispatch({
       type: 'REMOVE',
       data: blogToRemove.id
@@ -67,11 +67,12 @@ export const remove = (blogToRemove) => {
 
 export const createBlog = content => {
   return async dispatch => {
-    const newBlog = await blogService.create(content)
+    const newBlog = await blogService.create(content, blogUrl)
     dispatch({
       type: 'NEW_BLOG',
       data: newBlog
     })
+    return newBlog
   }
 }
 

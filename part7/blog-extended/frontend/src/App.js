@@ -76,6 +76,7 @@ const App = () => {
 
 
       <Switch>
+
         <Route path='/blogs'>
           <BlogList />
         </Route>
@@ -85,6 +86,7 @@ const App = () => {
         <Route path='/'>
           <BlogList />
         </Route>
+
       </Switch>
     </>
 

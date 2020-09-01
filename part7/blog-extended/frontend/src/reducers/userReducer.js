@@ -5,7 +5,7 @@ const baseUrl = '/api/users'
 const reducer = (state = { users: [], activeUser: null }, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return { users: state.users, activeUser: action.data }
+      return { ...state.users, activeUser: action.data }
     case 'INIT_USERS':
       return {
         activeUser: state.activeUser, users: action.data

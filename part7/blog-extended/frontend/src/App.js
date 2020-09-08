@@ -14,7 +14,7 @@ import { setUser } from './reducers/userReducer'
 import { Link, Switch, Route } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/userReducer'
-
+import User from './components/User'
 
 
 
@@ -77,6 +77,9 @@ const App = () => {
 
       <Switch>
 
+        <Route path='/users/:id'>
+          <User />
+        </Route>
         <Route path='/blogs'>
           <BlogList />
         </Route>

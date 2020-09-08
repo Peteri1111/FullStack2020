@@ -8,7 +8,7 @@ const BlogView = ({ userBlogs }) => (
 
     <ul>
       {userBlogs.map(blog =>
-        <li key={blog.id}>{blog.title}</li>)}
+        <li key={blog.id}><a href={`/blogs/${blog.id}`}>{blog.title}</a></li>)}
     </ul>
 
   </>
@@ -28,7 +28,6 @@ const User = () => {
       <>
         <h2>{user.username}</h2>
         <BlogView userBlogs={user.blogs} />
-
       </>
       :
       null

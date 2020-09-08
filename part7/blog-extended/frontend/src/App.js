@@ -15,7 +15,7 @@ import { Link, Switch, Route } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUsers } from './reducers/userReducer'
 import User from './components/User'
-
+import Blog from './components/Blog'
 
 
 const App = () => {
@@ -77,8 +77,12 @@ const App = () => {
 
       <Switch>
 
+
         <Route path='/users/:id'>
           <User />
+        </Route>
+        <Route path='/blogs/:id'>
+          <Blog />
         </Route>
         <Route path='/blogs'>
           <BlogList />
